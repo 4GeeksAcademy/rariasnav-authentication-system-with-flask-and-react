@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			baseURL : "https://refactored-garbanzo-69gggxgvv5wg3rvr7-3001.app.github.dev/api"
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -46,6 +47,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			login: async (email, password) => {
+				
+				try {					
+					const requestOptions = {
+						method : 'POST',
+						headers : { 'Content-Type' : 'application/json'},
+						body : JSON.stringify({
+							"email" : email,
+							"password" : password
+						})
+					}
+					const response = await fetch(`${getStore().baseURL}/login`, requestOptions)
+					const data = await response.json()
+					console.log(data)
+
+				} catch (error) {
+					
+				}
 			}
 		}
 	};
