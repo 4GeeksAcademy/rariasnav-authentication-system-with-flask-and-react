@@ -14,7 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			baseURL : "https://refactored-garbanzo-69gggxgvv5wg3rvr7-3001.app.github.dev/api"
+			baseURL : "https://refactored-garbanzo-69gggxgvv5wg3rvr7-3001.app.github.dev/api",
+			auth : false
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -61,11 +62,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const response = await fetch(`${getStore().baseURL}/login`, requestOptions)
 					const data = await response.json()
+					if( response.status === 200 ){
+						setStore({ auth: true })
+					}
+					console.log(response.status)
+					if( response.ok){
+						localStorage.setItem("token", data.access_token);
+					}
 					console.log(data)
 
 				} catch (error) {
 					
 				}
+			},
+			logout: () => {
+				setStore({ auth: false })
+				localStorage.removeItem("token");
 			}
 		}
 	};
